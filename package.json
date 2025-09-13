@@ -1,6 +1,6 @@
 {
   "name": "@gravityai-dev/flow",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Flow control nodes for GravityWorkflow - Code, Loop, IfElse, Context, Relay, Note, UMAP",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
