@@ -14,7 +14,7 @@ export function createNodeDefinition(): EnhancedNodeDefinition {
   const { NodeInputType } = getPlatformDependencies();
 
   return {
-    packageVersion: "1.0.10",
+    packageVersion: "1.0.11",
     type: NODE_TYPE,
   isService: false,
   name: "UMAP",
