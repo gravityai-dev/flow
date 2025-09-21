@@ -32,6 +32,9 @@ const plugin = createPlugin({
 
     const { UMAPNode } = await import("./UMAP");
     api.registerNode(UMAPNode);
+
+    const { MCPNode } = await import("./MCP/node");
+    api.registerNode(MCPNode);
   },
 });
 

@@ -14,7 +14,7 @@ export function createNodeDefinition(): EnhancedNodeDefinition {
   const { NodeInputType } = getPlatformDependencies();
 
   return {
-    packageVersion: "1.0.14",
+    packageVersion: "1.0.17",
     type: NODE_TYPE,
   name: "Loop",
   description: "Iterate through array items one by one",
