@@ -43,8 +43,9 @@ export default class CodeExecutor extends PromiseNode<CodeConfig> {
         const workflowId = context.workflow?.id || "unknown";
         const nodeId = context.nodeId || "code";
 
-        const universalId = createUniversalId(workflowId, nodeId);
-        const contentId = createContentHash(config.code);
+        // Include the result content in the universalId hash
+        const universalId = createUniversalId(workflowId, nodeId, result);
+        const contentId = createContentHash(result);
 
         this.logger.info("Generated IDs for output", {
           workflowId,

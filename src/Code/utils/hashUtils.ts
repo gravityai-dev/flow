@@ -19,14 +19,21 @@ export function createContentHash(input: any): string {
 }
 
 /**
- * Creates a universal ID hash from workflow ID and node ID
+ * Creates a universal ID hash from workflow ID, node ID, and content
  * @param workflowId - The workflow ID
  * @param nodeId - The node ID
+ * @param content - The output content to include in the hash
  * @returns Universal ID hash (12 characters)
  */
-export function createUniversalId(workflowId: string, nodeId: string): string {
-  // Combine workflow ID and node ID for the hash input
-  const idString = `${workflowId}-${nodeId}`;
+export function createUniversalId(workflowId: string, nodeId: string, content?: any): string {
+  // Start with workflow and node IDs
+  let idString = `${workflowId}-${nodeId}`;
+  
+  // If content is provided, include it in the hash
+  if (content !== undefined && content !== null) {
+    const contentString = typeof content === "string" ? content : JSON.stringify(content, Object.keys(content).sort());
+    idString = `${idString}-${contentString}`;
+  }
 
   // Create hash and return short version
   const fullHash = createHash("sha256").update(idString).digest("hex");

@@ -7,7 +7,7 @@ function createNodeDefinition(): EnhancedNodeDefinition {
   const { NodeInputType } = getPlatformDependencies();
 
   return {
-    packageVersion: "1.0.17",
+    packageVersion: "1.0.19",
     type: NODE_TYPE,
     name: "MCP Service",
     description: "Model Context Protocol service node that handles schema-based service requests",

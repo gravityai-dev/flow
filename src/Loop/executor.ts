@@ -13,6 +13,7 @@ interface LoopState {
   items: any[];
   currentIndex: number;
   isComplete: boolean;
+  collectedItems: any[]; // Collected objects from each iteration
 }
 
 interface LoopInputs {
@@ -47,7 +48,8 @@ export class LoopNode extends CallbackNode<LoopConfig, LoopState> {
     return {
       items: [],
       currentIndex: 0,
-      isComplete: false
+      isComplete: false,
+      collectedItems: []
     };
   }
 
@@ -88,11 +90,21 @@ export class LoopNode extends CallbackNode<LoopConfig, LoopState> {
       // Check if we've exhausted all items
       if (state.currentIndex >= state.items.length) {
         this.logger.info(`Loop: No more items to process, emitting finished signal`);
+        
+        // Build finished object with collected items if any
+        const finishedOutput: any = { finished: true };
+        
+        if (state.collectedItems.length > 0) {
+          finishedOutput.collected = state.collectedItems;
+          this.logger.info(`Loop: Emitting ${state.collectedItems.length} collected items`);
+        }
+        
         emit({
           __outputs: {
-            finished: true
+            finished: finishedOutput
           }
         });
+        
         return {
           ...state,
           isComplete: true
@@ -106,6 +118,17 @@ export class LoopNode extends CallbackNode<LoopConfig, LoopState> {
         
         this.logger.info(`Loop: Outputting item ${state.currentIndex}/${state.items.length - 1}`);
         
+        // Check if we should collect items from this iteration
+        let newCollectedItems = state.collectedItems;
+        if (resolvedConfig?.collectItems && inputs?.next) {
+          // The collectItems template should already be resolved to an object by the workflow engine
+          const collectedItem = resolvedConfig.collectItems;
+          if (collectedItem && typeof collectedItem === 'object') {
+            newCollectedItems = [...state.collectedItems, collectedItem];
+            this.logger.info(`Loop: Collected item ${newCollectedItems.length}`);
+          }
+        }
+        
         // Emit the item without finished signal
         emit({
           __outputs: {
@@ -116,7 +139,8 @@ export class LoopNode extends CallbackNode<LoopConfig, LoopState> {
         
         return {
           ...state,
-          currentIndex: state.currentIndex + 1
+          currentIndex: state.currentIndex + 1,
+          collectedItems: newCollectedItems
           // Never mark complete here - only when next signal finds no more items
         };
       }
@@ -143,14 +167,18 @@ export class LoopNode extends CallbackNode<LoopConfig, LoopState> {
         
         emit({
           __outputs: {
-            finished: true
+            finished: {
+              finished: true,
+              collected: [] // Empty array if no items to process
+            }
           }
         });
         
         return {
           items: resolvedConfig.items,
           currentIndex: 0,
-          isComplete: true
+          isComplete: true,
+          collectedItems: []
         };
       }
       
@@ -172,7 +200,8 @@ export class LoopNode extends CallbackNode<LoopConfig, LoopState> {
         return {
           items: resolvedConfig.items,
           currentIndex: 1, // Start at 1 since we already emitted the first
-          isComplete: false // Never complete until we receive next with no more items
+          isComplete: false, // Never complete until we receive next with no more items
+          collectedItems: [] // Start with empty collection
         };
       }
     }

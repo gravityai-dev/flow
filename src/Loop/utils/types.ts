@@ -30,4 +30,5 @@ export interface LoopState {
 export interface LoopConfig {
   items?: any[];        // Array from upstream nodes (EXECUTE signal on 'items' connector)
   continue?: any;       // Continue trigger (EXECUTE signal on 'continue' connector)
+  collectItems?: string; // Optional template to collect objects from each iteration
 }
