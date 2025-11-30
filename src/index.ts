@@ -35,6 +35,9 @@ const plugin = createPlugin({
 
     const { MCPNode } = await import("./MCP/node");
     api.registerNode(MCPNode);
+
+    const { FieldValidatorNode } = await import("./FieldValidator");
+    api.registerNode(FieldValidatorNode);
   },
 });
 
