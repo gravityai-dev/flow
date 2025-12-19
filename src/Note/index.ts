@@ -14,7 +14,7 @@ export function createNodeDefinition(): EnhancedNodeDefinition {
   const { NodeInputType } = getPlatformDependencies();
 
   return {
-    packageVersion: "1.0.20",
+    packageVersion: "1.1.0",
     type: NODE_TYPE,
   isService: false,
   name: "Note",

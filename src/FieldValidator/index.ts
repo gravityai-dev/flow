@@ -18,7 +18,7 @@ export const NODE_TYPE = "FieldValidator";
 // Create node definition
 function createNodeDefinition(): EnhancedNodeDefinition {
   return {
-    packageVersion: "1.0.20",
+    packageVersion: "1.1.0",
     type: NODE_TYPE,
     isService: false,
     name: "Field Validator",

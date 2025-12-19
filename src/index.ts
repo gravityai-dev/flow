@@ -38,6 +38,9 @@ const plugin = createPlugin({
 
     const { FieldValidatorNode } = await import("./FieldValidator");
     api.registerNode(FieldValidatorNode);
+
+    const { SuggestionsNode } = await import("./Suggestions");
+    api.registerNode(SuggestionsNode);
   },
 });
 
